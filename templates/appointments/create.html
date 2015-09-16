@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{% trans "Create doctor's appointment" %}{% endblock title %}
+
+{% block preload %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.4.5/jquery.datetimepicker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.4.5/jquery.datetimepicker.min.js"></script>
+{% endblock preload %}
+
+{% block content %}
+    {% crispy form %}
+
+{% endblock content %}
+
+{% block javascript %}
+    <script>
+
+    var specializationSelect = $('#id_specialization');
+    var doctorSelect = $('#id_doctor');
+
+    var currentDoctor = doctorSelect.val();
+
+    var defaultAllowedTimes = [
+                '09:00', '10:00', '11:00', '12:00', '13:00',
+                '14:00', '15:00', '16:00', '17:00', '18:00',
+            ];
+    
+    var specializations = {
+        {% for specialization in specializations %}
+            {{ specialization.id }}: [
+                {% for doctor in specialization.doctor_set.all %}
+                    '{{ doctor.pk }}',
+                {% endfor %}
+            ],
+        {% endfor %}
+    }
+
+    var doctors = {
+        {% for doctor in doctors %}
+            {{ doctor.pk }}: {
+                "name": '{{ doctor }}',
+                "specialization": '{{ doctor.specialization.pk }}',
+                "reserved_times": [
+                    {% for tm in doctor.reserved_times %}
+                        '{{ tm|date:"Y-n-j G:00" }}',    
+                    {% endfor %}
+                ]
+            },
+        {% endfor %}
+    }
+
+    var reserveTime = function( currentDateTime ){
+        if (currentDoctor) {
+            var currentReservedTimes = doctors[currentDoctor]['reserved_times'];
+            currentYearMonthDay = currentDateTime.getFullYear() + '-' + 
+                    (currentDateTime.getMonth()+1) + '-' + currentDateTime.getDate();
+            var newAllowedTimes = defaultAllowedTimes.slice();
+            for (var i = 0; i < currentReservedTimes.length; i++) {
+                if (currentReservedTimes[i].indexOf(currentYearMonthDay) != -1) {
+                    var reservedTime = currentReservedTimes[i].split(' ')[1]
+                    var index = newAllowedTimes.indexOf(reservedTime);
+                    if (index != -1) {
+                        newAllowedTimes.splice(index, 1);
+                    }
+                }
+            }
+        }
+        this.setOptions({
+            allowTimes: newAllowedTimes        
+        });
+        
+    };
+
+    $('#div_id_specialization').insertAfter($('#div_id_doctor'))
+
+    $('#id_appointment_time').datetimepicker({
+            lang: 'ru',
+            inline:true,
+            format: 'Y-m-d H:i',
+            allowTimes: defaultAllowedTimes,
+            onGenerate:function(ct){
+                            $(this).find('.xdsoft_date.xdsoft_weekend')
+                                .addClass('xdsoft_disabled');
+                        },
+            minDate: 0,
+            dayOfWeekStart: '1',
+            onChangeDateTime: reserveTime,
+            onShow: reserveTime,
+        });
+    
+    
+    doctorSelect.on('change', onDoctorSelect)
+    specializationSelect.on('change', onSpecializationSelect)
+
+    function onDoctorSelect(e) {
+        var newDoctor = $(this).val();
+        if (newDoctor) {
+            specializationSelect.val(doctors[newDoctor]['specialization']);
+            currentDoctor = newDoctor;
+        } else {
+            specializationSelect.val("");
+            currentDoctor = false;
+        }
+    }
+
+    function onSpecializationSelect() {
+        console.log('asdas');
+        var newSpecialization = $(this).val();
+        newDoctorOptions = doctorSelect.find('[value=""]');
+        newDoctors = specializations[newSpecialization];
+        if (newSpecialization != "") {
+            for (var i = 0; i < newDoctors.length; i++) {
+                newDoctorOptions = newDoctorOptions.add($('<option>')
+                                            .val(newDoctors[i])
+                                            .html(doctors[newDoctors[i]]['name'])
+                                            );
+            }
+        } else {
+            for (var key in  doctors) {
+                newDoctorOptions = newDoctorOptions.add($('<option>')
+                                                        .val(key)
+                                                        .html(doctors[key]['name'])
+                                                        )
+            }
+        }
+        currentDoctor = false;
+        doctorSelect.html(newDoctorOptions);
+    }
+    </script>
+{% endblock javascript %}
