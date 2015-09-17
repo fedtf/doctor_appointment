@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    {% trans 'Name' %}: {{ appointment.patient_name }}
+    {% trans 'Second name' %}: {{ appointment.patient_second_name }}
+    {% trans 'Third name' %}: {{ appointment.patient_third_name }}
+    {% trans 'Doctor' %}: {{ appointment.doctor }}
+    {% trans 'Appointment time' %}: {{ appointment.appointment_time|date:"Y-n-j G:00" }}
+{% endblock content %}
