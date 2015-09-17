@@ -24,19 +24,33 @@ class AppointmentForm(forms.ModelForm):
         self.helper.add_input(Submit('submit', 'Submit'))
 
     def clean(self):
+        """
+        Raises ValidationError if chosen time is not available.
+        """
         cleaned_data = super(AppointmentForm, self).clean()
         appointment_time = cleaned_data['appointment_time']
 
         weekend = set([5, 6])
+
         if appointment_time.weekday() in weekend:
-            raise forms.ValidationError(_('Sorry, but we are not working on weekends'),
-                                        code='invalid')
+            raise forms.ValidationError(_('''Sorry, but we do not
+                    work on the weekend.'''),  code='invalid')
+        if appointment_time.hour >=18 or appointment_time.hour < 9:
+            raise forms.ValidationError(_('''The working hours
+                                    are 9-18'''),code='invalid')
+        print(appointment_time)
+        if appointment_time.minute != 0:
+            raise forms.ValidationError(_('''The appointment can
+                        start only in the beginning of an hour.'''),
+                        code='invalid')
+
 
         doctor = cleaned_data['doctor']
 
         if appointment_time in doctor.reserved_times:
-            raise forms.ValidationError(_('This time is already reserved, please choose another'),
-                                        code='invalid')
+            raise forms.ValidationError(_('''This time is already
+                        reserved, please choose another.'''),
+                        code='invalid')
 
         return cleaned_data
 

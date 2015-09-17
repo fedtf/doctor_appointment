@@ -19,8 +19,11 @@
 
     var specializationSelect = $('#id_specialization');
     var doctorSelect = $('#id_doctor');
+    var dateTimeInput = $('#id_appointment_time');
 
     var currentDoctor = doctorSelect.val();
+
+    var doctorPhrase = '{% trans "Please choose a doctor" %}';
 
     var defaultAllowedTimes = [
                 '09:00', '10:00', '11:00', '12:00', '13:00',
@@ -42,7 +45,7 @@
             {{ doctor.pk }}: {
                 "name": '{{ doctor }}',
                 "specialization": '{{ doctor.specialization.pk }}',
-                "reserved_times": [
+                "reservedTimes": [
                     {% for tm in doctor.reserved_times %}
                         '{{ tm|date:"Y-n-j G:00" }}',    
                     {% endfor %}
@@ -50,10 +53,10 @@
             },
         {% endfor %}
     }
-
+    
     var reserveTime = function( currentDateTime ){
         if (currentDoctor) {
-            var currentReservedTimes = doctors[currentDoctor]['reserved_times'];
+            var currentReservedTimes = doctors[currentDoctor]['reservedTimes'];
             currentYearMonthDay = currentDateTime.getFullYear() + '-' + 
                     (currentDateTime.getMonth()+1) + '-' + currentDateTime.getDate();
             var newAllowedTimes = defaultAllowedTimes.slice();
@@ -66,19 +69,25 @@
                     }
                 }
             }
+        } else {
+            console.log('asds');
+            dateTimeInput.val(doctorPhrase);
+            return false;
         }
         this.setOptions({
             allowTimes: newAllowedTimes        
         });
         
     };
+    
 
     $('#div_id_specialization').insertAfter($('#div_id_doctor'))
-
-    $('#id_appointment_time').datetimepicker({
+    
+    dateTimeInput.attr('readonly', 'readonly');
+    dateTimeInput.datetimepicker({
             lang: 'ru',
-            inline:true,
-            format: 'Y-m-d H:i',
+            //inline:true,
+            format: 'Y-m-d H:00',
             allowTimes: defaultAllowedTimes,
             onGenerate:function(ct){
                             $(this).find('.xdsoft_date.xdsoft_weekend')
@@ -103,6 +112,7 @@
             specializationSelect.val("");
             currentDoctor = false;
         }
+        dateTimeInput.val('');
     }
 
     function onSpecializationSelect() {
