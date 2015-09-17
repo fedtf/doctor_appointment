@@ -1,0 +1,101 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-09-17 17:07+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: appointments/admin.py:17 appointments/forms.py:69
+#: templates/appointments/detail.html:15
+msgid "Doctor"
+msgstr "Доктор"
+
+#: appointments/forms.py:13
+msgid "Choose a doctor"
+msgstr "Выберите доктора"
+
+#: appointments/forms.py:16
+msgid "Choose a specialization"
+msgstr "Выберите специализацию"
+
+#: appointments/forms.py:17
+msgid "Specialization"
+msgstr "Специализация"
+
+#: appointments/forms.py:38
+msgid ""
+"Sorry, but we do not\n"
+"                        work on the weekend."
+msgstr "Приносим своим извинения, но мы не работаем на выходных."
+
+#: appointments/forms.py:41
+msgid ""
+"The working hours\n"
+"                                        are 9-18"
+msgstr "Рабочее время с 9 до 18."
+
+#: appointments/forms.py:45
+msgid ""
+"The appointment can\n"
+"                            start only in the beginning of an hour."
+msgstr "Прием может быть назначен только на начало часа."
+
+#: appointments/forms.py:54
+msgid ""
+"This time is already\n"
+"                                reserved, please choose another."
+msgstr "Это время уже занято, пожалуйста выберите другое."
+
+#: appointments/forms.py:66 templates/appointments/detail.html:12
+msgid "Name"
+msgstr "Имя"
+
+#: appointments/forms.py:67 templates/appointments/detail.html:13
+msgid "Second name"
+msgstr "Фамилия"
+
+#: appointments/forms.py:68 templates/appointments/detail.html:14
+msgid "Third name"
+msgstr "Отчество"
+
+#: appointments/forms.py:70 templates/appointments/detail.html:16
+msgid "Appointment time"
+msgstr "Время приема"
+
+#: appointments/forms.py:71
+msgid "Complains"
+msgstr "Жалобы"
+
+#: appointments/models.py:19
+msgid "Dr. "
+msgstr "Д-р "
+
+#: appointments/views.py:15
+msgid "Appointment successfully created."
+msgstr "Запись успешно произведена."
+
+#: templates/appointments/create.html:5 templates/appointments/create.html:14
+msgid "Create doctor's appointment"
+msgstr "Записаться на прием"
+
+#: templates/appointments/create.html:31
+msgid "Please choose a doctor"
+msgstr "Пожалуйста, выберите доктора"
+
+#: templates/appointments/detail.html:4 templates/appointments/detail.html:8
+msgid "Information about the appointment"
+msgstr "Информация о приеме"

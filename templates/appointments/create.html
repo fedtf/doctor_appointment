@@ -10,7 +10,12 @@
 {% endblock preload %}
 
 {% block content %}
+<div class="page-header text-center">
+    <h1>{% trans "Create doctor's appointment" %}</h1>
+</div>
+<div class="well col-lg-8 col-lg-offset-2">
     {% crispy form %}
+</div>
 
 {% endblock content %}
 

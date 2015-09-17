@@ -14,6 +14,8 @@ class AppointmentForm(forms.ModelForm):
         self.fields['specialization'] = forms.ModelChoiceField(
                                             queryset=models.Specialization.objects.all())
         self.fields['specialization'].empty_label = _(u"Choose a specialization")
+        self.fields['specialization'].label = _(u"Specialization")
+
         self.helper = FormHelper()
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-2'
@@ -28,32 +30,43 @@ class AppointmentForm(forms.ModelForm):
         Raises ValidationError if chosen time is not available.
         """
         cleaned_data = super(AppointmentForm, self).clean()
-        appointment_time = cleaned_data['appointment_time']
+        appointment_time = cleaned_data.get('appointment_time')
+        if appointment_time:
+            weekend = set([5, 6])
 
-        weekend = set([5, 6])
-
-        if appointment_time.weekday() in weekend:
-            raise forms.ValidationError(_('''Sorry, but we do not
-                    work on the weekend.'''),  code='invalid')
-        if appointment_time.hour >=18 or appointment_time.hour < 9:
-            raise forms.ValidationError(_('''The working hours
-                                    are 9-18'''),code='invalid')
-        print(appointment_time)
-        if appointment_time.minute != 0:
-            raise forms.ValidationError(_('''The appointment can
-                        start only in the beginning of an hour.'''),
-                        code='invalid')
+            if appointment_time.weekday() in weekend:
+                raise forms.ValidationError(_('''Sorry, but we do not
+                        work on the weekend.'''),  code='invalid')
+            if appointment_time.hour >=18 or appointment_time.hour < 9:
+                raise forms.ValidationError(_('''The working hours
+                                        are 9-18'''),code='invalid')
+            print(appointment_time)
+            if appointment_time.minute != 0:
+                raise forms.ValidationError(_('''The appointment can
+                            start only in the beginning of an hour.'''),
+                            code='invalid')
 
 
-        doctor = cleaned_data['doctor']
+            doctor = cleaned_data.get('doctor')
 
-        if appointment_time in doctor.reserved_times:
-            raise forms.ValidationError(_('''This time is already
-                        reserved, please choose another.'''),
-                        code='invalid')
+            if doctor:
+                if appointment_time in doctor.reserved_times:
+                    raise forms.ValidationError(_('''This time is already
+                                reserved, please choose another.'''),
+                                code='invalid')
 
         return cleaned_data
 
     class Meta:
         model = models.Appointment
-        exclude = ('creation_time',)
+        fields = ('patient_name', 'patient_second_name',
+                  'patient_third_name', 'doctor',
+                  'appointment_time', 'complains')
+        labels = {
+            'patient_name': _(u'Name'),
+            'patient_second_name': _(u'Second name'),
+            'patient_third_name': _(u'Third name'),
+            'doctor': _(u'Doctor'),
+            'appointment_time': _(u'Appointment time'),
+            'complains': _('Complains'),
+        }

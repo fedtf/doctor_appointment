@@ -1,10 +1,19 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
+{% block title %}{% trans "Information about the appointment" %}{% endblock title %}
+
 {% block content %}
-    {% trans 'Name' %}: {{ appointment.patient_name }}
-    {% trans 'Second name' %}: {{ appointment.patient_second_name }}
-    {% trans 'Third name' %}: {{ appointment.patient_third_name }}
-    {% trans 'Doctor' %}: {{ appointment.doctor }}
-    {% trans 'Appointment time' %}: {{ appointment.appointment_time|date:"Y-n-j G:00" }}
+<div class="page-header text-center">
+    <h1>{% trans "Information about the appointment" %}</h1>
+</div>
+<div class="col-lg-8 col-lg-offset-2">
+    <table class="table ">
+        <tr><td>{% trans 'Name' %}</td> <td>{{ appointment.patient_name }}</td></tr>
+        <tr><td>{% trans 'Second name' %}</td> <td>{{ appointment.patient_second_name }}</td></tr>
+        <tr><td>{% trans 'Third name' %}</td> <td>{{ appointment.patient_third_name }}</td></tr>
+        <tr><td>{% trans 'Doctor' %}</td> <td>{{ appointment.doctor }}</td></tr>
+        <tr><td>{% trans 'Appointment time' %}</td> <td>{{ appointment.appointment_time|date:"Y-n-j G:00" }}</td></tr>
+    </table>
+</div>
 {% endblock content %}

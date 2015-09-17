@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '*#pd1p(#2q5gkq496mq^t+=9uw3lq0(iz3i=iwqvxzls02k1=q'
+SECRET_KEY = '*#pd1p(#2q5gkq496mq^t+=9uw3lq0(iz3i=iwqvxzls02k1='
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -91,6 +91,7 @@ DATABASES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
+LOCALE_PATHS = (os.path.join(BASE_DIR, 'locale'), )
 
 LANGUAGE_CODE = 'ru-ru'
 
